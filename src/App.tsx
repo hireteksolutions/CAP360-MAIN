@@ -30,8 +30,9 @@ import ScrollToTop from "./components/ScrollToTop";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsAndConditions from "./pages/terms-of-service";
 import DataDeletion from "./pages/DataDeletion";
-const queryClient = new QueryClient();
 
+
+const queryClient = new QueryClient();
 const App = () => (
   <HelmetProvider>
     <QueryClientProvider client={queryClient}>
@@ -61,6 +62,7 @@ const App = () => (
                   <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                   <Route path="/terms-of-service" element={<TermsAndConditions />} />
                   <Route path="/data-deletion" element={<DataDeletion />} />
+
                   <Route 
                     path="/admin" 
                     element={
