@@ -28,7 +28,8 @@ import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 import ScrollToTop from "./components/ScrollToTop";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
-
+import TermsAndConditions from "./pages/terms-of-service";
+import DataDeletion from "./pages/DataDeletion";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -58,6 +59,8 @@ const App = () => (
                   <Route path="/gallery" element={<Gallery />} />
                   <Route path="/auth" element={<Auth />} />
                   <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                  <Route path="/terms-of-service" element={<TermsAndConditions />} />
+                  <Route path="/data-deletion" element={<DataDeletion />} />
                   <Route 
                     path="/admin" 
                     element={
