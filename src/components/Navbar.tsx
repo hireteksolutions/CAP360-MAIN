@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import ConsultationModal from "./ConsultationModal";
 import { ChevronDown, X, Menu } from "lucide-react";
@@ -7,7 +7,9 @@ import { ChevronDown, X, Menu } from "lucide-react";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isJobDropdownOpen, setIsJobDropdownOpen] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const navigation = [
     { name: "Home", href: "/" },
@@ -16,9 +18,6 @@ const Navbar = () => {
     { name: "About Us", href: "/about" },
     { name: "Success Stories", href: "/story-success" },
     { name: "Contact", href: "/contact" },
-    // { name: "Gallery", href: "/gallery" },
-    // { name: "CXO Job Support", href: "/cxo-job-support" },
-    // { name: "International Job Support", href: "/international-job-support" },
   ];
 
   const jobSupportDropdown = [
@@ -26,27 +25,39 @@ const Navbar = () => {
     { name: "International Job Support", href: "/international-job-support" },
   ];
 
+  // Prevent Double Click Navigation
+  const handleNavigation = (href: string) => {
+    if (isNavigating) return;
+    setIsNavigating(true);
+
+    navigate(href);
+    setTimeout(() => setIsNavigating(false), 800);
+  };
+
   return (
     <nav className="shadow-lg sticky top-0 z-50 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           {/* Logo */}
           <div className="flex items-center">
-            <Link to="/" className="flex-shrink-0 flex items-center">
+            <button
+              onClick={() => handleNavigation("/")}
+              className="flex-shrink-0 flex items-center"
+            >
               <img
                 src="/cap-uploads/caplogo.png"
                 alt="CAP 360 Logo"
                 className="h-10 w-auto"
               />
-            </Link>
+            </button>
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navigation.map((item) => (
-              <Link
+              <button
                 key={item.name}
-                to={item.href}
+                onClick={() => handleNavigation(item.href)}
                 className={`px-3 py-2 text-sm font-medium transition-colors ${
                   location.pathname === item.href
                     ? "border-b-2"
@@ -58,9 +69,10 @@ const Navbar = () => {
                     ? { borderBottomColor: "#121B2E" }
                     : {}),
                 }}
+                disabled={isNavigating}
               >
                 {item.name}
-              </Link>
+              </button>
             ))}
 
             <ConsultationModal>
@@ -86,15 +98,17 @@ const Navbar = () => {
         {isOpen && (
           <div className="md:hidden">
             <div
-              className="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t bg-white"
+              className="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-top bg-white"
               style={{ borderTopColor: "#121B2E" }}
             >
-              {/* Regular Links */}
               {navigation.map((item) => (
-                <Link
+                <button
                   key={item.name}
-                  to={item.href}
-                  className={`block px-3 py-2 text-base font-medium transition-colors hover:opacity-75 ${
+                  onClick={() => {
+                    setIsOpen(false);
+                    handleNavigation(item.href);
+                  }}
+                  className={`block w-full text-left px-3 py-2 text-base font-medium transition-colors hover:opacity-75 ${
                     location.pathname === item.href ? "font-bold" : ""
                   }`}
                   style={{
@@ -103,13 +117,13 @@ const Navbar = () => {
                       ? { backgroundColor: "rgba(18, 27, 46, 0.1)" }
                       : {}),
                   }}
-                  onClick={() => setIsOpen(false)}
+                  disabled={isNavigating}
                 >
                   {item.name}
-                </Link>
+                </button>
               ))}
 
-              {/* Job Support Dropdown for Mobile */}
+              {/* Job Support Dropdown */}
               <div className="px-3 py-2">
                 <button
                   onClick={() => setIsJobDropdownOpen(!isJobDropdownOpen)}
@@ -127,18 +141,19 @@ const Navbar = () => {
                 {isJobDropdownOpen && (
                   <div className="mt-2 pl-4 space-y-1">
                     {jobSupportDropdown.map((item) => (
-                      <Link
+                      <button
                         key={item.name}
-                        to={item.href}
-                        className="block px-2 py-1 text-sm hover:bg-gray-100 rounded"
-                        style={{ color: "#121B2E" }}
                         onClick={() => {
                           setIsOpen(false);
                           setIsJobDropdownOpen(false);
+                          handleNavigation(item.href);
                         }}
+                        className="block w-full text-left px-2 py-1 text-sm hover:bg-gray-100 rounded"
+                        style={{ color: "#121B2E" }}
+                        disabled={isNavigating}
                       >
                         {item.name}
-                      </Link>
+                      </button>
                     ))}
                   </div>
                 )}
