@@ -467,7 +467,7 @@ const PsychometricServices = () => {
                 <Button 
                   size="lg" 
                   variant="outline"
-                  className="border-2 border-white/30 text-white hover:bg-white/10 backdrop-blur-sm transition-all duration-300"
+                  className="border-2 border-white/30 text-black hover:bg-white/10 backdrop-blur-sm transition-all duration-300"
                 >
                   Download Brochure
                 </Button>
